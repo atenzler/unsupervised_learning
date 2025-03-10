@@ -1,0 +1,26 @@
+datasetTrain = Dataset(datadir=trainDatadir,
+                       datafolders=trainFolders,
+                       subscript=subscript_train,
+                       geometry_model=training_args["geometry_model"],
+                       cfg=cfg,
+                       fluxes_subscript=deepLarts.data_args["fluxes_subscript"],
+                       crop_and_centralize_target_images=not training_args["add_empty_target_images_and_unet"],
+                       appl_low_passfilter=deepLarts.data_args["appl_low_passfilter_on_data"],
+                       appl_bilinear_smoothing=deepLarts.data_args["apply_bilinear_smoothing"],
+                       flux_sum2one=deepLarts.data_args["normalize_flux_sum_to_1"],
+                       flux_max2one=deepLarts.data_args["normalize_flux_max_to_1"],
+                       train_on_augmented_data=deepLarts.data_args["train_on_augmented_data"],
+                       cluster=CLUSTER,
+                       rank=rank,
+                       world_size=world_size,
+                       distribute=True,
+                       device=device)
+
+dataloaderTrain = utils.give_dataLoader(dataset=datasetTrain,
+                                        batch_size=training_args["batch_size"],
+                                        cluster=CLUSTER,
+                                        rank=rank,
+                                        world_size=world_size,
+                                        subscript="train",
+                                        shuffle=True
+                                        )
